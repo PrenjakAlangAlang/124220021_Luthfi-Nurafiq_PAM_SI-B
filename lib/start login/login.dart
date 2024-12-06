@@ -17,16 +17,23 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: const Color(0xFF121212),
-          alignment: Alignment.center,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: const Color(0xFF121212),
+        child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 24,
+              left: 24,
+              right: 24,
+              bottom: 24 + MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 50),
                 Image.asset('images/logo.png', height: 150),
+                const SizedBox(height: 20),
                 const Text(
                   "Please login",
                   style: TextStyle(
@@ -39,35 +46,31 @@ class _LoginState extends State<Login> {
                   "Fill in your email and password correctly!",
                   style: TextStyle(fontSize: 14, color: Colors.white),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 30),
                 _emailField(),
-                const SizedBox(height: 14),
+                const SizedBox(height: 20),
                 _passwordField(),
-                const SizedBox(height: 14),
+                const SizedBox(height: 30),
                 _loginButton(),
-                const SizedBox(height: 14),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "Don't have an account yet? ",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SubscriptionPage()),
+                              builder: (context) => const SubscriptionPage()),
                         );
                       },
                       child: const Text(
                         'Register',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
@@ -81,64 +84,52 @@ class _LoginState extends State<Login> {
   }
 
   Widget _emailField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            hintText: 'Email',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
+    return TextField(
+      controller: emailController,
+      decoration: InputDecoration(
+        hintText: 'Email',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _passwordField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Password',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
+    return TextField(
+      controller: passwordController,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: 'Password',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _loginButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: _loginUser,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1DB954),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            minimumSize: const Size.fromHeight(50),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _loginUser,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF1DB954),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
-          child: const Text(
-            'Login',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+        ),
+        child: const Text(
+          'Login',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -158,7 +149,6 @@ class _LoginState extends State<Login> {
 
     final user = await HiveConfig.loginUser(email, password);
     if (user != null) {
-      print(password);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Home()),

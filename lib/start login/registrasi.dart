@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:quran/database/hive_config.dart';
 import 'package:quran/database/user_model.dart';
-import 'login.dart'; // Adjust the import according to your project structure
+import 'login.dart';
 
 class Registrasi extends StatefulWidget {
   const Registrasi({super.key});
@@ -34,32 +34,48 @@ class _RegistrasiState extends State<Registrasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: const Color(0xFF121212),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('images/logo.png', height: 150),
-            const Text("Please register",
-                style: TextStyle(
-                    fontSize: 20,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 24,
+              left: 24,
+              right: 24,
+              bottom: 24 + MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('images/logo.png', height: 150),
+                const SizedBox(height: 20),
+                const Text(
+                  "Please register",
+                  style: TextStyle(
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)),
-            const Text("Fill in your email and password correctly!",
-                style: TextStyle(fontSize: 15, color: Colors.white)),
-            const SizedBox(height: 20),
-            _profileImageField(),
-            const SizedBox(height: 20),
-            _usernameField(),
-            const SizedBox(height: 20),
-            _emailField(),
-            const SizedBox(height: 14),
-            _passwordField(),
-            const SizedBox(height: 14),
-            _konfirmasipasswordField(),
-            const SizedBox(height: 14),
-            _registrasiButton(),
-          ],
+                    color: Colors.white,
+                  ),
+                ),
+                const Text(
+                  "Fill in your data correctly!",
+                  style: TextStyle(fontSize: 14, color: Colors.white),
+                ),
+                const SizedBox(height: 30),
+                _profileImageField(),
+                const SizedBox(height: 20),
+                _usernameField(),
+                const SizedBox(height: 20),
+                _emailField(),
+                const SizedBox(height: 20),
+                _passwordField(),
+                const SizedBox(height: 20),
+                _konfirmasipasswordField(),
+                const SizedBox(height: 20),
+                _registrasiButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -69,7 +85,7 @@ class _RegistrasiState extends State<Registrasi> {
     return GestureDetector(
       onTap: _pickImage,
       child: CircleAvatar(
-        radius: 25,
+        radius: 50,
         backgroundColor: Colors.grey[300],
         backgroundImage: _image != null ? FileImage(_image!) : null,
         child: _image == null
@@ -80,82 +96,66 @@ class _RegistrasiState extends State<Registrasi> {
   }
 
   Widget _usernameField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: usernameController,
-          decoration: InputDecoration(
-            hintText: 'Username',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-          ),
+    return TextField(
+      controller: usernameController,
+      decoration: InputDecoration(
+        hintText: 'Username',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _emailField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            hintText: 'Email',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-          ),
+    return TextField(
+      controller: emailController,
+      decoration: InputDecoration(
+        hintText: 'Email',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _passwordField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Password',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-          ),
+    return TextField(
+      controller: passwordController,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: 'Password',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _konfirmasipasswordField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextField(
-          controller: konfirmasipasswordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Konfirmsi Password',
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-          ),
+    return TextField(
+      controller: konfirmasipasswordController,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: 'Konfirmasi Password',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );
   }
 
   Widget _registrasiButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+    return SizedBox(
+      width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
           if (_validateFields()) {
@@ -179,16 +179,20 @@ class _RegistrasiState extends State<Registrasi> {
             }
           }
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF1DB954),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+        ),
         child: const Text(
           'Register',
           style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1DB954),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          minimumSize: const Size.fromHeight(50),
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
